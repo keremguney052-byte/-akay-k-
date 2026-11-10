@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dilan'ıma Özel 🌸</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: #090307;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Arka Plan Işık Atmosferi */
+        .bg-glow-1 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(230, 115, 150, 0.25) 0%, rgba(15, 5, 11, 0) 70%);
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+            filter: blur(40px);
+        }
+        .bg-glow-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(15, 5, 11, 0) 70%);
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            pointer-events: none;
+            filter: blur(30px);
+        }
+
+        /* Düşen Canlı Yapraklar */
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, #ffb6c1, #e67396);
+            border-radius: 15px 0 15px 0;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 2;
+            animation: floatPetal 11s infinite linear;
+            box-shadow: 0 0 10px rgba(230, 115, 150, 0.4);
+        }
+
+        @keyframes floatPetal {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0.8); opacity: 0; }
+            15% { opacity: 0.6; }
+            85% { opacity: 0.6; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+        }
+
+        /* Lüks Zarf Tasarımı */
+        .envelope-card {
+            width: 100%;
+            background: rgba(28, 12, 22, 0.75);
+            border: 1.5px solid rgba(212, 175, 55, 0.4);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            padding: 40px 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 30px rgba(230, 115, 150, 0.15);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .envelope-card:active {
+            transform: scale(0.97);
+        }
+
+        .seal-btn {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #f3e5ab, #d4af37, #996515);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4), inset 0 2px 5px rgba(255,255,255,0.6);
+            margin-bottom: 25px;
+            position: relative;
+            animation: pulseGlow 2.5s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+            100% { box-shadow: 0 0 30px rgba(230, 115, 150, 0.8); }
+        }
+
+        .recipient-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 20%, #ffe6ee 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: 3px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .sub-tag {
+            font-size: 0.75rem;
+            color: rgba(212, 175, 55, 0.9);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .tap-prompt {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(230, 115, 150, 0.15);
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(230, 115, 150, 0.3);
+            letter-spacing: 1px;
+        }
+
+        /* Ana Kart (Açıldıktan Sonra) */
+        .main-card {
+            display: none;
+            width: 100%;
+            background: rgba(20, 8, 16, 0.85);
+            border: 1.5px solid rgba(230, 115, 150, 0.35);
+            border-radius: 28px;
+            padding: 25px 20px 30px 20px;
+            backdrop-filter: blur(25px);
+            text-align: center;
+            box-shadow: 0 35px 80px rgba(0,0,0,0.9), inset 0 0 25px rgba(230, 115, 150, 0.1);
+            animation: cardAppear 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cardAppear {
+            0% { opacity: 0; transform: translateY(50px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .img-container {
+            position: relative;
+            width: 100%;
+            height: 340px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: slowZoom 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        .romantic-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.85rem;
+            line-height: 1.45;
+            font-style: italic;
+            font-weight: 500;
+            background: linear-gradient(135deg, #ffffff, #ffd1dc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 18px;
+            padding: 0 10px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 0 auto 15px auto;
+        }
+
+        .footer-note {
+            font-size: 0.8rem;
+            color: #d4af37;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* Müzik Butonu */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(30, 15, 25, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #d4af37;
+            font-size: 18px;
+            z-index: 100;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <!-- Müzik Kontrolü -->
+    <div class="music-btn" id="musicToggle" onclick="toggleAudio()">🎵</div>
+    <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3"></audio>
+
+    <!-- Taç Yapraklar -->
+    <div class="petal" style="left: 8%; width: 14px; height: 20px; animation-duration: 9s;"></div>
+    <div class="petal" style="left: 28%; width: 18px; height: 26px; animation-duration: 13s; animation-delay: 2s;"></div>
+    <div class="petal" style="left: 55%; width: 12px; height: 18px; animation-duration: 10s; animation-delay: 4s;"></div>
+    <div class="petal" style="left: 78%; width: 16px; height: 22px; animation-duration: 12s; animation-delay: 1s;"></div>
+
+    <div class="container">
+        <!-- Zarf Ekranı -->
+        <div class="envelope-card" id="envelopeCard" onclick="openSurprise()">
+            <div class="seal-btn">🌸</div>
+            <div class="recipient-title">Dilan'ıma</div>
+            <div class="sub-tag">Özel Bir Sürpriz</div>
+            <div class="tap-prompt">Zarfa Dokun ✨</div>
+        </div>
+
+        <!-- Açılan Kart Ekranı -->
+        <div class="main-card" id="mainCard">
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?q=80&w=1200&auto=format&fit=crop" alt="4K Şakayık Demeti">
+            </div>
+            <div class="romantic-text">
+                "Senin kadar güzel değiller ama sen herşeyden güzelsin." "HERŞEYİM"
+            </div>
+            <div class="divider"></div>
+            <div class="footer-note">Hızlıca iyileşmen dileğiyle ❤️</div>
+        </div>
+    </div>
+
+    <script>
+        let audio = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        function toggleAudio() {
+            if (isPlaying) {
+                audio.pause();
+                document.getElementById('musicToggle').innerText = '🔇';
+            } else {
+                audio.play();
+                document.getElementById('musicToggle').innerText = '🎵';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function openSurprise() {
+            // Konfeti Efekti
+            confetti({
+                particleCount: 70,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ffb6c1', '#e67396', '#d4af37', '#ffffff']
+            });
+
+            // Müzik Başlat
+            audio.play().then(() => { isPlaying = true; }).catch(() => {});
+
+            // Kart Geçişi
+            const env = document.getElementById('envelopeCard');
+            const main = document.getElementById('mainCard');
+
+            env.style.opacity = '0';
+            env.style.transform = 'scale(0.85)';
+            
+            setTimeout(() => {
+                env.style.display = 'none';
+                main.style.display = 'block';
+            }, 400);
+        }
+    </script>
+</body>
+</html>
